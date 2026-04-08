@@ -8,13 +8,35 @@ Wraps [Read AI's REST API](https://api.read.ai) with OAuth 2.1 authentication an
 
 ### Human
 
+**One-liner (recommended):**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/WorldInnovationsDepartment/read-ai-cli/main/install.sh | bash
+```
+
+This creates an isolated venv at `~/.venvs/read-ai` and prints an alias command to add to your shell config.
+
+**Manual install into venv:**
+
+```bash
+python3 -m venv ~/.venvs/read-ai
+~/.venvs/read-ai/bin/pip install git+https://github.com/WorldInnovationsDepartment/read-ai-cli.git
+```
+
+Then add the alias to avoid activating the venv each time:
+
+```bash
+echo 'alias readai="~/.venvs/read-ai/bin/readai"' >> ~/.bashrc  # or ~/.zshrc
+source ~/.bashrc
+```
+
+**Direct install (no venv):**
+
 ```bash
 pip install git+https://github.com/WorldInnovationsDepartment/read-ai-cli.git
 ```
 
-Requires Python 3.10+ and `requests`.
-
-After install the `readai` command is available globally.
+Requires Python 3.10+.
 
 ### AI Agent
 
