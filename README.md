@@ -18,9 +18,9 @@ After install the `readai` command is available globally.
 
 ### AI Agent
 
-This CLI ships with a `SKILL.md` for AI agent integration (e.g. [Hermes](https://hermes-agent.nousresearch.com/#)).
+This CLI ships with a skill definition at [`skills/read-ai/SKILL.md`](skills/read-ai/SKILL.md) for AI agent integration (e.g. [Hermes](https://hermes-agent.nousresearch.com/#)).
 
-To install the skill, copy or symlink `SKILL.md` from this repo into your agent's skill directory. The skill describes when and how to use each CLI command, API details, pitfalls, and common workflows.
+To install, point your agent's `external_dirs` at this repo's `skills/` directory, or add the repo as a git submodule. The skill describes when and how to use each CLI command, API details, pitfalls, and common workflows.
 
 ## Features
 
