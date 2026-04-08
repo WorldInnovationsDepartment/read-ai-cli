@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "read-ai-cli"
+version = "2.0.0"
+description = "CLI for Read AI meeting notetaker — access transcripts, summaries, action items, and metrics"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "WorldInnovationsDepartment" },
+]
+dependencies = [
+    "requests>=2.28",
+]
+
+[project.scripts]
+readai = "readai.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["readai"]
+
+[project.urls]
+Homepage = "https://github.com/WorldInnovationsDepartment/read-ai-cli"
+Issues = "https://github.com/WorldInnovationsDepartment/read-ai-cli/issues"
