@@ -162,6 +162,10 @@ Then convert to PDF/DOCX and deliver.
 readai get <ID> --expand summary chapter_summaries action_items key_questions topics transcript metrics
 ```
 
+### 6. Bulk process audit across many meetings
+
+For requests like “read all meetings from the last 2 months and describe company processes”, use the packaged workflow in `references/bulk-process-audit.md`: bulk-list meetings with a high `--limit`, sequentially expand each meeting, build a digest, split analysis by process domains, then synthesize a concise report.
+
 ## Pitfalls
 
 1. **Token expiry:** Access tokens last only 10 minutes. The CLI auto-refreshes, but if refresh fails, re-run `readai auth`
