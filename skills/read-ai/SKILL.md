@@ -90,6 +90,8 @@ readai token-test
 - **Token refresh:** Access tokens expire every 10 minutes; CLI auto-refreshes
 - **Refresh token rotation:** Each refresh returns a NEW refresh token — old one invalidated
 - **API status:** Open beta — endpoints may change
+- **Public REST API is read-only for meetings:** official docs list only `GET /v1/meetings`, `GET /v1/meetings/{id}`, and `GET /v1/meetings/{id}/live`. No documented REST endpoint creates public/share links or modifies report sharing.
+- **Report sharing is app/internal, not OAuth REST:** the web app uses internal session ACL routes (`/sessions/{id}/acl`) with browser session cookies, not the OAuth `meeting:read` token. UI-derived payload for link access is `PATCH /sessions/{id}/acl` with `{"generalAccess":{"accessPattern":"anyone","accessLevel":"viewer_full","readaiAccountRequired":false}}`; restricted access is `accessPattern:"people_with_access"`. Do not run this blindly — it requires owner/editor browser auth and changes report visibility.
 
 ### Endpoints
 
