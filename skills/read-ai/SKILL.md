@@ -168,6 +168,37 @@ readai get <ID> --expand summary chapter_summaries action_items key_questions to
 
 For requests like “read all meetings from the last 2 months and describe company processes”, use the packaged workflow in `references/bulk-process-audit.md`: bulk-list meetings with a high `--limit`, sequentially expand each meeting, build a digest, split analysis by process domains, then synthesize a concise report.
 
+### 7. Export all available transcripts for a company corpus
+
+For semantic-core / knowledge-graph datasets, first list meetings with:
+
+```bash
+readai meetings --days 3650 --limit 10000 --json
+```
+
+Then sequentially fetch each meeting (avoid parallel runs because refresh-token rotation can race):
+
+```bash
+readai get <MEETING_ID> --expand summary chapter_summaries action_items key_questions topics transcript metrics --json
+```
+
+Normalize transcript dicts by mapping `speakers[]` to `turns[]`; turns can be reverse chronological, so sort by start timestamp if available. For full cross-source YTC corpus exports, use the `company-corpus-export` skill.
+
+### 8. Reconstruct a tracker task’s goal from recent meetings
+
+Use this when a task title or thin tracker ticket does not explain the intended product outcome.
+
+1. List the requested time window with a generous limit (for “recent three weeks,” use `--days 21`).
+2. Identify likely meetings by both title and participants. For YTC/Revisior research, internal delivery sessions may be titled `YTC Plaibox Sync`, `YTC Plaibox Retro & Planning`, `YTC Planning`, or `ISC`; `Revisior AM [INTERNAL]` is account-management context. Treat `YTC & Revisior` client syncs as supporting cross-checks rather than internal-team evidence.
+3. Fetch candidate meetings **sequentially** with summary, chapter summaries, action items, topics, and transcript. Never parallelize Read AI calls because refresh-token rotation can invalidate concurrent requests.
+4. Search all expanded fields, not only titles or AI summaries, for:
+   - the task identifier and exact title;
+   - product nouns and synonyms (for example CTA/button, billing/payment/subscription, redirect/navigation);
+   - spoken/transcribed variants in the meeting language.
+5. Preserve dated evidence with meeting title, ID, speaker, and the smallest useful transcript window. Use summaries for discovery; use transcript turns for claims about decisions or scope.
+6. Cross-check the project tracker. A requirement ID mentioned in meetings may be embedded in an issue summary rather than being the tracker key, and a newly created ticket may have an empty body while an older predecessor contains the acceptance criteria.
+7. Separate the task’s core goal from adjacent tickets and implementation constraints. Report what is in scope, explicitly out of scope, current tracker state, and confidence. Label any reconstruction from predecessor tickets or meeting context as inference.
+
 ## Pitfalls
 
 1. **Token expiry:** Access tokens last only 10 minutes. The CLI auto-refreshes, but if refresh fails, re-run `readai auth`
